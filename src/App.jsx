@@ -1,38 +1,55 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import './App.css'
-import authService from "./appwrite/auth"
-import {login, logout} from "./store/authSlice"
-import { Footer, Header } from './components'
-import { Outlet } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import './App.css';
+import authService from './appwrite/auth';
+import { login, logout } from './store/authSlice';
+import { Footer, Header } from './components';
+import { Outlet } from 'react-router-dom';
 
 function App() {
-  const [loading, setLoading] = useState(true)
-  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    authService.getCurrentUser()
-    .then((userData) => {
-      if (userData) {
-        dispatch(login({userData}))
-      } else {
-        dispatch(logout())
+    // Function to fetch current user data
+    const fetchCurrentUser = async () => {
+      try {
+        const userData = await authService.getCurrentUser();
+        if (userData) {
+          dispatch(login({ userData }));
+        } else {
+          dispatch(logout());
+        }
+      } catch (error) {
+        console.error('Error fetching current user:', error);
+        // Optionally handle error state or alert the user
+      } finally {
+        setLoading(false); // Set loading to false once done
       }
-    })
-    .finally(() => setLoading(false))
-  }, [])
-  
-  return !loading ? (
+    };
+
+    fetchCurrentUser();
+  }, [dispatch]); // Only run once on component mount
+
+  return (
     <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
-      <div className='w-full block'>
-        <Header />
-        <main>
-        TODO:  <Outlet />
-        </main>
-        <Footer />
-      </div>
+      {/* Conditional rendering based on loading state */}
+      {loading ? (
+        <div className='flex items-center justify-center h-screen w-full'>
+          <p className='text-xl text-gray-700'>Loading...</p>
+        </div>
+      ) : (
+        <div className='w-full block'>
+          <Header />
+          <main className='p-4'>
+            {/* Outlet for rendering nested routes */}
+            <Outlet />
+          </main>
+          <Footer />
+        </div>
+      )}
     </div>
-  ) : null
+  );
 }
 
-export default App
+export default App;
