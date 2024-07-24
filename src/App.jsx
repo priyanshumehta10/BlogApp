@@ -9,12 +9,12 @@ import { Outlet } from 'react-router-dom';
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-
   useEffect(() => {
     // Function to fetch current user data
     const fetchCurrentUser = async () => {
       try {
         const userData = await authService.getCurrentUser();
+        console.log(userData);
         if (userData) {
           dispatch(login({ userData }));
         } else {
@@ -40,7 +40,7 @@ function App() {
         </div>
       ) : (
         <div className='w-full'>
-          <Header />
+          <Header/>
           <main className='container mx-auto px-4 py-8'>
             {/* Outlet for rendering nested routes */}
             <Outlet />

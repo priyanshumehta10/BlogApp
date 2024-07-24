@@ -85,7 +85,7 @@ const Header = () => {
           {/* Logout Button */}
           {authStatus && (
             <div className="ml-auto">
-              <LogoutBtn />
+              <LogoutBtn/>
             </div>
           )}
         </nav>
