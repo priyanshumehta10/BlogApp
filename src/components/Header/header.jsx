@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Logo, Container, LogoutBtn } from '../index';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 const Header = () => {
   const navigate = useNavigate();
   const authStatus = useSelector((state) => state.auth.status);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
     { name: 'Home', slug: '/', active: true },
@@ -15,6 +16,10 @@ const Header = () => {
     { name: 'All Posts', slug: '/all-posts', active: authStatus },
     { name: 'Add Post', slug: '/add-post', active: authStatus },
   ];
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   return (
     <header className="py-4 shadow-lg bg-gray-900 text-white">
@@ -41,8 +46,11 @@ const Header = () => {
             </ul>
           </div>
 
-          <div className="md:hidden">
-            <button className="text-white">
+          <div className="md:hidden flex items-center">
+            <button
+              className="text-white"
+              onClick={handleMobileMenuToggle}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -61,28 +69,38 @@ const Header = () => {
           </div>
 
           {authStatus && (
-            <div className="ml-auto">
+            <div className="hidden md:block ml-auto">
               <LogoutBtn />
             </div>
           )}
         </nav>
 
-        <div className="md:hidden absolute top-16 left-0 w-full bg-gray-900 py-2 px-4 shadow-lg">
-          <ul className="flex flex-col space-y-2">
-            {navItems.map((item) =>
-              item.active ? (
-                <li key={item.name}>
-                  <button
-                    onClick={() => navigate(item.slug)}
-                    className="block px-4 py-2 text-white hover:bg-gray-700 rounded-lg"
-                  >
-                    {item.name}
-                  </button>
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-16 left-0 w-full bg-gray-900 py-2 px-4 shadow-lg z-50">
+            <ul className="flex flex-col space-y-2">
+              {navItems.map((item) =>
+                item.active ? (
+                  <li key={item.name}>
+                    <button
+                      onClick={() => {
+                        navigate(item.slug);
+                        setMobileMenuOpen(false);
+                      }}
+                      className="block px-4 py-2 text-white hover:bg-gray-700 rounded-lg"
+                    >
+                      {item.name}
+                    </button>
+                  </li>
+                ) : null
+              )}
+              {authStatus && (
+                <li>
+                  <LogoutBtn />
                 </li>
-              ) : null
-            )}
-          </ul>
-        </div>
+              )}
+            </ul>
+          </div>
+        )}
       </Container>
     </header>
   );
