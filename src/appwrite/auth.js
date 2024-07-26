@@ -49,13 +49,15 @@ export class AuthService {
     }
 
     async logout() {
-
         try {
-            await this.account.deleteSessions();
+          await this.account.deleteSessions(); // This should clear the session
+          // Optionally, clear localStorage or other session storage
+          localStorage.removeItem('authToken');
         } catch (error) {
-            console.log("Appwrite serive :: logout :: error", error);
+          console.log("Appwrite service :: logout :: error", error);
         }
-    }
+      }
+      
 }
 
 const authService = new AuthService();

@@ -17,22 +17,21 @@ const Header = () => {
   ];
 
   return (
-    <header className="py-3 shadow-lg bg-gray-800">
+    <header className="py-4 shadow-lg bg-gray-900 text-white">
       <Container>
         <nav className="flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="mr-4">
-              <Link to="/">
-                <Logo width="70px" />
-              </Link>
-            </div>
-            <ul className="hidden md:flex space-x-4 items-center">
+          <div className="flex items-center space-x-4">
+            <Link to="/">
+              <Logo width="70px" />
+            </Link>
+
+            <ul className="hidden md:flex space-x-6 items-center">
               {navItems.map((item) =>
                 item.active ? (
                   <li key={item.name}>
                     <button
                       onClick={() => navigate(item.slug)}
-                      className="inline-block px-4 py-2 text-white bg-gray-700 hover:bg-blue-600 rounded-full transition duration-200"
+                      className="px-4 py-2 text-white bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-300"
                     >
                       {item.name}
                     </button>
@@ -42,7 +41,6 @@ const Header = () => {
             </ul>
           </div>
 
-          {/* Mobile Menu Toggle Button */}
           <div className="md:hidden">
             <button className="text-white">
               <svg
@@ -62,33 +60,29 @@ const Header = () => {
             </button>
           </div>
 
-          {/* Mobile Menu */}
-          <div className="md:hidden absolute top-16 left-0 w-full bg-gray-800 py-2 px-4">
-            <ul className="flex flex-col space-y-2">
-              {navItems.map((item) =>
-                item.active ? (
-                  <li key={item.name}>
-                    <button
-                      onClick={() => {
-                        navigate(item.slug);
-                      }}
-                      className="block px-4 py-2 text-white hover:bg-blue-600 rounded"
-                    >
-                      {item.name}
-                    </button>
-                  </li>
-                ) : null
-              )}
-            </ul>
-          </div>
-
-          {/* Logout Button */}
           {authStatus && (
             <div className="ml-auto">
-              <LogoutBtn/>
+              <LogoutBtn />
             </div>
           )}
         </nav>
+
+        <div className="md:hidden absolute top-16 left-0 w-full bg-gray-900 py-2 px-4 shadow-lg">
+          <ul className="flex flex-col space-y-2">
+            {navItems.map((item) =>
+              item.active ? (
+                <li key={item.name}>
+                  <button
+                    onClick={() => navigate(item.slug)}
+                    className="block px-4 py-2 text-white hover:bg-gray-700 rounded-lg"
+                  >
+                    {item.name}
+                  </button>
+                </li>
+              ) : null
+            )}
+          </ul>
+        </div>
       </Container>
     </header>
   );
