@@ -57,3 +57,30 @@
 .read-the-docs {
   color: #888;
 }
+/* Logo.css */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa; /* Light background for better visibility */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.logo {
+  max-width: 100%;
+  height: auto; /* Maintain aspect ratio */
+}
+
+.header-logo .logo {
+  width: 40px; /* Smaller width for header logo */
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .logo-container {
+    padding: 8px;
+  }
+}
+
